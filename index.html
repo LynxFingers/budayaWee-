@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budaya Wee!!</title>
+ <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+       /* Untuk browser berbasis Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 0px;  /* Menyembunyikan scrollbar horizontal */
+    height: 0px; /* Menyembunyikan scrollbar vertikal */
+}
+
+/* Untuk Firefox */
+html {
+    scrollbar-width: none;  /* Menyembunyikan scrollbar di Firefox */
+}
+
+/* Untuk Internet Explorer dan Edge */
+body {
+    -ms-overflow-style: none; /* Menyembunyikan scrollbar di IE dan Edge */
+} 
+
+    body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('Map-indonesia.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: rgba(0, 0, 0, 0.6); /* Overlay gelap opsional */
+    background-blend-mode: multiply;
+    
+
+    color: white;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+
+
+        /* Animated background elements */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #4fc3f7;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: 2px solid #4fc3f7;
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #4fc3f7;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 195, 247, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 150px 50px 100px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(79, 195, 247, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+        }
+
+        .status {
+            background: rgba(79, 195, 247, 0.2);
+            border: 1px solid #4fc3f7;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 14px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffffff, #4fc3f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(79, 195, 247, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Character Selection */
+        .character-section {
+            padding: 80px 50px;
+            text-align: center;
+        }
+
+        .character-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: #4fc3f7;
+        }
+
+        .character-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .character-card {
+            width: 180px;
+            height: 240px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(79, 195, 247, 0.1));
+            border: 2px solid rgba(79, 195, 247, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .character-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(79, 195, 247, 0.1), transparent);
+            transform: rotate(-45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .character-card:hover::before {
+            animation: shine 0.8s ease-in-out;
+            opacity: 1;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(-45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(-45deg); }
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: #4fc3f7;
+            box-shadow: 0 20px 40px rgba(79, 195, 247, 0.3);
+        }
+
+        .character-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-avatar::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .character-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .character-role {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+
+        .character-status {
+            padding: 4px 12px;
+            background: rgba(79, 195, 247, 0.2);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #4fc3f7;
+        }
+
+        .locked {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .locked .character-status {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888;
+        }
+
+        /* Character Detail */
+        .character-detail {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            margin: 0 50px;
+            border-radius: 30px;
+            padding: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .character-info h2 {
+            font-size: 2rem;
+            color: #4fc3f7;
+            margin-bottom: 10px;
+        }
+
+        .character-subtitle {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .character-description {
+            line-height: 1.8;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .character-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .character-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(79, 195, 247, 0.1);
+            border-radius: 10px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .rating {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .star {
+            color: #ffd700;
+            font-size: 1.5rem;
+        }
+
+        .character-image {
+            text-align: center;
+            position: relative;
+        }
+
+        .character-portrait {
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(145deg, rgba(79, 195, 247, 0.2), rgba(79, 195, 247, 0.05));
+            border: 3px solid rgba(79, 195, 247, 0.3);
+            border-radius: 20px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #4fc3f7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-portrait::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: slide 3s infinite;
+        }
+
+        @keyframes slide {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: -100%; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .character-grid {
+                gap: 15px;
+            }
+            
+            .character-card {
+                width: 160px;
+                height: 220px;
+            }
+            
+            .character-detail {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                margin: 0 20px;
+                padding: 40px 20px;
+            }
+            
+            .nav {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles"></div>
+
+   
+    
+    <section class="hero">
+        <h1>Budaya Wee!!</h1>
+        <p>Belajar dan Membaca Menjadi Lebih <br> Menyenangkan.</p>
+        <div class="hero-buttons">
+            <a href="#character-section" class="btn btn-primary">Jelajahi Sekarang</a>
+        </div>
+    </section>
+
+     <section class="character-section" id="character-section">
+        <h2>Mulai Baca Yuk!</h2>
+        <div class="character-grid">
+            <a href="character-detail.html?character=Sumatra%20Utara" class="character-card unlocked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Sumatra Utara</div>
+                <div class="character-role"></div>
+                <div class="character-status">UNLOCKED</div>
+            </a>
+            
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Aceh</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Sumatra Barat</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Kalimantan Barat</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">DKI Jakarta</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Jawa Barat</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">DI Yogyakarta</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Bali</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Nusa Tenggara Timur</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Sulawesi Utara</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Sulawesi Selatan</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Maluku</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+            <div class="character-card locked">
+                <div class="character-avatar"></div>
+                <div class="character-name">Papua</div>
+                <div class="character-role"></div>
+                <div class="character-status">LOCKED</div>
+            </div>
+
+            <a href="quiz-room.html" class="character-card unlocked">
+                <div class="character-avatar">🎲</div>
+                <div class="character-name">Quiz Room</div>
+                <div class="character-role">Quiz Master</div>
+                <div class="character-status">UNLOCKED</div>
+            </a>
+
+        </div>
+    </section>
+
+    <script>
+        function createParticles() {
+            const container = document.querySelector('.bg-particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        function initCharacterCards() {
+            const lockedCards = document.querySelectorAll('.character-card.locked');
+            lockedCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault(); // Mencegah navigasi
+                    alert('Maaf, karakter ini masih terkunci.');
+                });
+            });
+
+            // Smooth scrolling tetap dipertahankan
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            initCharacterCards();
+        });
+    </script>
+</body>
+</html>

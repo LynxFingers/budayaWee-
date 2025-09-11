@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Detail Provinsi</title>
+    <style>
+        /* CSS dari file index.html yang relevan */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('Map-indonesia.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: rgba(0, 0, 0, 0.6);
+            background-blend-mode: multiply;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        .bg-particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
+        }
+        .particle {
+            position: absolute; width: 2px; height: 2px; background: rgba(255, 255, 255, 0.3); border-radius: 50%; animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        .nav {
+            display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); position: fixed; top: 0; width: 100%; z-index: 100;
+        }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: #4fc3f7; }
+        .nav-buttons { display: flex; gap: 15px; }
+        .btn { padding: 8px 20px; border: 2px solid #4fc3f7; background: transparent; color: white; border-radius: 25px; text-decoration: none; transition: all 0.3s; cursor: pointer; }
+        .btn:hover { background: #4fc3f7; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(79, 195, 247, 0.3); }
+
+        /* General Container for detail sections */
+        .detail-container {
+            width: 80%; /* Lebar kontainer utama */
+            max-width: 1200px;
+            margin: 120px auto 50px auto; /* Memberi ruang dari nav, dan margin bawah */
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section 1: Info Dasar Provinsi (Sketsa 1) */
+        .province-overview {
+            display: flex;
+            flex-direction: column; /* Mengubah menjadi kolom di mobile */
+            gap: 30px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 30px;
+        }
+
+        .province-map {
+            flex: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .province-map img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(79, 195, 247, 0.3);
+        }
+        .province-map p {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+
+        .province-info-text {
+            flex: 1;
+            padding: 20px;
+            border-left: 2px solid #4fc3f7; /* Garis pemisah visual */
+        }
+        .province-info-text h1 {
+            font-size: 2.8rem;
+            color: #4fc3f7;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(79, 195, 247, 0.4);
+        }
+        .province-info-text p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        .scroll-hint {
+            text-align: center;
+            margin-top: 30px;
+            font-style: italic;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        /* Section baru: Karakter (sesuai sketsa) */
+        .character-detail-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 30px;
+        }
+        
+        .character-detail-section h2 {
+            font-size: 2.5rem;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .character-flex-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .character-flex-container img {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(79, 195, 247, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .character-flex-container img:hover {
+            transform: scale(1.03);
+        }
+
+        .character-description {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        
+        /* Section 2: Kebudayaan & Adat Istiadat */
+        .culture-section {
+            margin-top: 50px;
+        }
+        .culture-section h2 {
+            font-size: 2.2rem;
+            color: #4fc3f7;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(79, 195, 247, 0.4);
+        }
+        .culture-description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            color: #e0e0e0;
+        }
+
+        /* Gaya untuk item budaya (Layout Gambar di Atas, Teks di Bawah) */
+        .culture-grid-new {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .culture-item-new {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(79, 195, 247, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            gap: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .culture-item-new:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(79, 195, 247, 0.3);
+        }
+        
+        .culture-item-new img {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(79, 195, 247, 0.2);
+        }
+        .culture-item-new h3 {
+            font-size: 1.8rem;
+            color: #f7a04f;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(247, 160, 79, 0.3);
+        }
+        .culture-item-new p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        /* Layout untuk desktop */
+        @media (min-width: 769px) {
+            .province-overview {
+                flex-direction: row;
+            }
+            .province-info-text {
+                border-left: 2px solid #4fc3f7;
+                border-top: none;
+                padding-top: 20px;
+            }
+            .character-flex-container {
+                flex-direction: row;
+                text-align: left;
+            }
+            .character-flex-container.reverse {
+                flex-direction: row-reverse;
+            }
+            .character-flex-container img {
+                width: 40%;
+                min-width: 300px;
+            }
+            .character-detail-section h2 {
+                font-size: 3rem;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .province-overview {
+                flex-direction: column;
+            }
+            .province-info-text {
+                border-left: none;
+                border-top: 2px solid #4fc3f7;
+                padding-top: 30px;
+            }
+            .detail-container {
+                width: 90%;
+                margin: 100px auto 30px auto;
+                padding: 30px;
+            }
+            .province-info-text h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav { padding: 15px 20px; }
+            .nav-links, .nav-buttons { gap: 15px; }
+            .btn { padding: 6px 15px; }
+            .detail-container {
+                width: 95%;
+                margin: 80px auto 20px auto;
+                padding: 20px;
+            }
+            .province-info-text h1 {
+                font-size: 1.8rem;
+            }
+            .province-info-text p, .culture-description, .culture-item-new p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-particles"></div>
+
+   
+
+    <div class="detail-container">
+        <div class="province-overview">
+            <div class="province-map">
+                <img id="province-map-img" src="SumutMap.jpg" alt="Peta Provinsi">
+                <p>(Pulau <span id="province-name-map"></span>)</p>
+            </div>
+            <div class="province-info-text">
+                <h1 id="province-display-name"></h1>
+                <p>Nama : <span id="info-name"></span></p>
+                <p>Luas : <span id="info-area"></span></p>
+                <p>Ibu Kota : <span id="info-capital"></span></p>
+                <p>Suku Asli : <span id="info-tribes"></span></p>
+            </div>
+        </div>
+        <p class="scroll-hint">Scroll ke bawah untuk informasi lebih lanjut.</p>
+
+        ---
+
+        <div class="character-detail-section">
+            <h2 id="suku-main-title"></h2>
+            <div class="character-flex-container">
+                <img id="character-img" src="CharacterSumut.jpg" alt="Karakter Sumatera Utara">
+                <div class="character-description">
+                    <p id="character-desc"></p>
+                </div>
+            </div>
+        </div>
+
+        ---
+
+        <div class="culture-section">
+            <h2 id="culture-main-title">Kebudayaan dan Adat Istiadat</h2>
+            <p class="culture-description" id="culture-general-desc"></p>
+
+            <h3 style="font-size: 2rem; color: #4fc3f7; text-align: center; margin-bottom: 30px; text-shadow: 0 0 15px rgba(79, 195, 247, 0.4);">Suku Batak</h3>
+
+            <div class="culture-grid-new">
+                <div class="culture-item-new" id="rumah-adat-item">
+                    <img id="rumah-adat-img" src="RumahBolon.jpg" alt="Rumah Adat">
+                    <div class="content">
+                        <h3 id="rumah-adat-name"></h3>
+                        <p id="rumah-adat-desc"></p>
+                    </div>
+                </div>
+
+                <div class="culture-item-new" id="pakaian-adat-item">
+                    <img id="pakaian-adat-img" src="BajuAdatBatak.jpg" alt="Pakaian Adat">
+                    <div class="content">
+                        <h3 id="pakaian-adat-name"></h3>
+                        <p id="pakaian-adat-desc"></p>
+                    </div>
+                </div>
+
+                <div class="culture-item-new" id="kain-khas-item">
+                    <img id="kain-khas-img" src="Ulos.jpg" alt="Kain Khas">
+                    <div class="content">
+                        <h3 id="kain-khas-name"></h3>
+                        <p id="kain-khas-desc"></p>
+                    </div>
+                </div>
+
+                <div class="culture-item-new" id="tarian-adat-item">
+                    <img id="tarian-adat-img" src="tariTorTor.jpg" alt="Tarian Adat">
+                    <div class="content">
+                        <h3 id="tarian-adat-name"></h3>
+                        <p id="tarian-adat-desc"></p>
+                    </div>
+                </div>
+
+                <div class="culture-item-new" id="alat-musik-item">
+                    <img id="alat-musik-img" src="gondang.jpg" alt="Alat Musik">
+                    <div class="content">
+                        <h3 id="alat-musik-name"></h3>
+                        <p id="alat-musik-desc"></p>
+                    </div>
+                </div>
+
+                <div class="culture-item-new" id="makanan-khas-item">
+                    <img id="makanan-khas-img" src="IkanBatak.jpg" alt="Makanan Khas">
+                    <div class="content">
+                        <h3 id="makanan-khas-name"></h3>
+                        <p id="makanan-khas-desc"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="scroll-hint" style="margin-top: 50px;">Kembali ke <a href="index.html" style="color:#4fc3f7; text-decoration:none;">Halaman Utama</a>.</p>
+    </div>
+
+    <script>
+        const provinceDetails = {
+            'Sumatra Utara': {
+                pageTitle: 'Detail Provinsi Sumatera Utara',
+                mapImage: 'SumutMap.jpg',
+                area: '72.461 km²',
+                capital: 'Medan',
+                tribes: 'Batak, Nias, Melayu, Karo, Simalungun, Mandailing, Angkola',
+                
+                character: {
+                    mainTribeTitle: 'Suku Batak',
+                    image: 'CharacterSumut.jpg',
+                    description: 'Suku Batak adalah salah satu suku besar yang ada di Indonesia, tepatnya banyak tinggal di daerah Sumatera Utara. Orang Batak terkenal ramah, suka bekerja keras, dan memiliki kebudayaan yang sangat unik serta menarik.Suku Batak punya banyak kelompok, seperti Batak Toba, Batak Karo, Batak Simalungun, Batak Mandailing, Batak Pakpak, dan Batak Angkola.',
+                },
+
+                cultureDesc: 'Kebudayaan Batak sangat kaya. Mereka punya rumah adat yang namanya Rumah Bolon, bentuknya besar, atapnya runcing, dan biasanya dihias dengan ukiran indah. Selain itu, ada juga Ulos, yaitu kain khas Batak yang sering dipakai dalam acara penting, seperti pernikahan atau upacara adat.Orang Batak juga suka bernyanyi dan menari. Salah satu tariannya adalah Tari Tor-Tor yang gerakannya khas dan diiringi musik tradisional yang disebut Gondang.Selain budaya, orang Batak juga terkenal dengan makanan khasnya, seperti arsik ikan mas dan saksang. Rasanya enak dan penuh bumbu!',
+                
+                rumahAdat: {
+                    name: 'Rumah Bolon',
+                    desc: 'Rumah adat khas suku Batak Toba, berbentuk panggung dengan atap melengkung. Merupakan simbol status sosial dan pusat kegiatan adat masyarakat Batak.',
+                    image: 'RumahBolon.jpg'
+                },
+                pakaianAdat: {
+                    name: 'Ulos (Pakaian Adat Batak)',
+                    desc: 'Kain tenun tradisional Batak yang memiliki makna filosofis mendalam. Digunakan dalam berbagai upacara adat sebagai lambang kehormatan, kasih sayang, dan status sosial.',
+                    image: 'BajuAdatBatak.jpg'
+                },
+                kainKhas: {
+                    name: 'Ulos (Kain Tenun Batak)',
+                    desc: 'Sebagai kain sakral, Ulos sering diberikan dalam upacara penting seperti pernikahan, kelahiran, atau kematian, melambangkan berkat dan perlindungan.',
+                    image: 'Ulos.jpg'
+                },
+                tarianAdat: {
+                    name: 'Tari Tor-tor',
+                    desc: 'Tarian tradisional Batak yang ekspresif, diiringi musik gondang, sering dilakukan dalam upacara adat dan penyambutan tamu. Gerakannya melambangkan penghormatan dan doa.',
+                    image: 'tariTorTor.jpg'
+                },
+                alatMusik: {
+                    name: 'Gondang (Gordang Sembilan)',
+                    desc: 'Perangkat musik perkusi tradisional Batak yang terdiri dari sembilan gendang berukuran berbeda. Gondang sangat penting dalam upacara adat dan ritual suku Batak.',
+                    image: 'gondang.jpg'
+                },
+                makananKhas: {
+                    name: 'Ikan Arsik',
+                    desc: 'Olahan ikan mas bumbu kuning khas Batak yang kaya rempah. Ikan Arsik adalah hidangan wajib dalam setiap pesta adat Batak, melambangkan kebersamaan dan rasa syukur.',
+                    image: 'IkanBatak.jpg'
+                }
+            },
+            // Anda bisa menambahkan detail untuk provinsi lain di sini,
+        };
+
+        function createParticles() {
+            const container = document.querySelector('.bg-particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function loadProvinceDetails() {
+            const provinceName = getQueryParam('character');
+            const data = provinceDetails[provinceName];
+
+            if (data) {
+                document.getElementById('page-title').textContent = data.pageTitle;
+
+                document.getElementById('province-map-img').src = data.mapImage;
+                document.getElementById('province-map-img').alt = `Peta ${provinceName}`;
+                document.getElementById('province-name-map').textContent = provinceName;
+                document.getElementById('province-display-name').textContent = provinceName;
+                document.getElementById('info-name').textContent = provinceName;
+                document.getElementById('info-area').textContent = data.area;
+                document.getElementById('info-capital').textContent = data.capital;
+                document.getElementById('info-tribes').textContent = data.tribes;
+
+                // Memuat detail karakter
+                document.getElementById('suku-main-title').textContent = data.character.mainTribeTitle;
+                document.getElementById('character-img').src = data.character.image;
+                document.getElementById('character-desc').textContent = data.character.description;
+
+                document.getElementById('culture-general-desc').textContent = data.cultureDesc;
+
+                // Memuat detail untuk setiap item budaya sesuai layout baru
+                // Rumah Adat
+                document.getElementById('rumah-adat-img').src = data.rumahAdat.image;
+                document.getElementById('rumah-adat-img').alt = data.rumahAdat.name;
+                document.getElementById('rumah-adat-name').textContent = data.rumahAdat.name;
+                document.getElementById('rumah-adat-desc').textContent = data.rumahAdat.desc;
+
+                // Pakaian Adat
+                document.getElementById('pakaian-adat-img').src = data.pakaianAdat.image;
+                document.getElementById('pakaian-adat-img').alt = data.pakaianAdat.name;
+                document.getElementById('pakaian-adat-name').textContent = data.pakaianAdat.name;
+                document.getElementById('pakaian-adat-desc').textContent = data.pakaianAdat.desc;
+
+                // Kain Khas
+                document.getElementById('kain-khas-img').src = data.kainKhas.image;
+                document.getElementById('kain-khas-img').alt = data.kainKhas.name;
+                document.getElementById('kain-khas-name').textContent = data.kainKhas.name;
+                document.getElementById('kain-khas-desc').textContent = data.kainKhas.desc;
+
+                // Tarian Adat
+                document.getElementById('tarian-adat-img').src = data.tarianAdat.image;
+                document.getElementById('tarian-adat-img').alt = data.tarianAdat.name;
+                document.getElementById('tarian-adat-name').textContent = data.tarianAdat.name;
+                document.getElementById('tarian-adat-desc').textContent = data.tarianAdat.desc;
+
+                // Alat Musik
+                document.getElementById('alat-musik-img').src = data.alatMusik.image;
+                document.getElementById('alat-musik-img').alt = data.alatMusik.name;
+                document.getElementById('alat-musik-name').textContent = data.alatMusik.name;
+                document.getElementById('alat-musik-desc').textContent = data.alatMusik.desc;
+
+                // Makanan Khas
+                document.getElementById('makanan-khas-img').src = data.makananKhas.image;
+                document.getElementById('makanan-khas-img').alt = data.makananKhas.name;
+                document.getElementById('makanan-khas-name').textContent = data.makananKhas.name;
+                document.getElementById('makanan-khas-desc').textContent = data.makananKhas.desc;
+            } else {
+                document.getElementById('province-display-name').textContent = 'Provinsi Tidak Ditemukan';
+                document.getElementById('info-name').textContent = 'Silakan kembali ke halaman utama.';
+                document.getElementById('info-area').textContent = '';
+                document.getElementById('info-capital').textContent = '';
+                document.getElementById('info-tribes').textContent = '';
+                document.getElementById('province-map-img').src = 'https://via.placeholder.com/200x150?text=Tidak+Ditemukan';
+                document.getElementById('province-map-img').alt = 'Tidak Ditemukan';
+                document.querySelector('.culture-section').style.display = 'none';
+                document.querySelector('.character-detail-section').style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            loadProvinceDetails();
+        });
+    </script>
+</body>
+</html>

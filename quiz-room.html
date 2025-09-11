@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Room</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1a1a2e; /* Warna latar belakang gelap */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #4fc3f7;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-back {
+            padding: 10px 25px;
+            background: #4fc3f7;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background 0.3s;
+            margin-top: 30px;
+        }
+
+        .btn-back:hover {
+            background: #29b6f6;
+        }
+
+        /* Container untuk seluruh quiz */
+        .quiz-container {
+            width: 90%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Styling untuk pertanyaan */
+        .question-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .question-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .question-box h2 {
+            font-size: 1.8rem;
+            color: #f7a04f; /* Warna oranye untuk pertanyaan */
+            margin-bottom: 15px;
+        }
+
+        .question-box img {
+            max-width: 250px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Styling untuk pilihan jawaban */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 15px;
+            background: #2a2a47;
+            color: white;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #3c3c69;
+            border-color: #4fc3f7;
+        }
+
+        .option-btn.correct {
+            background-color: #4CAF50; /* Hijau untuk jawaban benar */
+            border-color: #388E3C;
+            animation: pulse 1s infinite;
+        }
+
+        .option-btn.wrong {
+            background-color: #F44336; /* Merah untuk jawaban salah */
+            border-color: #D32F2F;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .result.correct {
+            color: #4CAF50;
+        }
+
+        .result.wrong {
+            color: #F44336;
+        }
+
+        .final-score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-top: 40px;
+            color: #4fc3f7;
+            display: none; /* Sembunyikan skor awal */
+        }
+
+        /* Animasi */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quiz-container {
+                padding: 20px;
+            }
+            .question-box img {
+                max-width: 180px;
+            }
+            .question-box h2 {
+                font-size: 1.5rem;
+            }
+            .option-btn {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <div class="question-box" id="q1">
+            <h2>1. Apa nama makanan khas Batak yang sering dihidangkan saat pesta adat?</h2>
+            <img src="IkanBatak.jpg" alt="Makanan Khas Batak">
+            <div class="options-grid">
+                <button class="option-btn" onclick="checkAnswer(this, 'q1')">A. Naniura</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q1')">B. Babi Panggang</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q1')">C. Ikan Arsik</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q1')">D. Saksang</button>
+            </div>
+            <p class="result" id="q1-result"></p>
+        </div>
+
+        <div class="question-box" id="q2">
+            <h2>2. Di mana letak tarian Tor-tor?</h2>
+            <img src="tariTorTor.jpg" alt="Tari Tor-tor">
+            <div class="options-grid">
+                <button class="option-btn" onclick="checkAnswer(this, 'q2')">A. Sumatera Utara</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q2')">B. Riau</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q2')">C. Jawa</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q2')">D. Kalimantan</button>
+            </div>
+            <p class="result" id="q2-result"></p>
+        </div>
+        
+        <div class="question-box" id="q3">
+            <h2>3. Salah satu pakaian khas daerah Sumatera Utara adalah kain...</h2>
+            <img src="Ulos.jpg" alt="Kain Ulos">
+            <div class="options-grid">
+                <button class="option-btn" onclick="checkAnswer(this, 'q3')">A. Songket</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q3')">B. Ulos</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q3')">C. Batik</button>
+                <button class="option-btn" onclick="checkAnswer(this, 'q3')">D. Tenun</button>
+            </div>
+            <p class="result" id="q3-result"></p>
+        </div>
+        
+        <div class="final-score" id="final-score"></div>
+    </div>
+
+    <a href="index.html" class="btn-back">Kembali ke Halaman Utama</a>
+
+    <script>
+        const correctAnswers = {
+            'q1': 'C. Ikan Arsik',
+            'q2': 'A. Sumatera Utara',
+            'q3': 'B. Ulos'
+        };
+        
+        let score = 0;
+        let answeredQuestions = 0;
+        const totalQuestions = Object.keys(correctAnswers).length;
+
+        function checkAnswer(selectedButton, questionId) {
+            const questionBox = selectedButton.closest('.question-box');
+            const resultElement = document.getElementById(`${questionId}-result`);
+            const allButtons = questionBox.querySelectorAll('.option-btn');
+            
+            // Nonaktifkan semua tombol setelah satu jawaban dipilih
+            allButtons.forEach(btn => btn.disabled = true);
+
+            const selectedAnswerText = selectedButton.textContent;
+            const correctAnswerText = correctAnswers[questionId];
+
+            if (selectedAnswerText === correctAnswerText) {
+                selectedButton.classList.add('correct');
+                resultElement.textContent = "Jawaban Benar! 🎉";
+                resultElement.classList.add('correct');
+                score++; // Menambah skor jika jawaban benar
+            } else {
+                selectedButton.classList.add('wrong');
+                resultElement.textContent = "Jawaban Salah. 😔";
+                resultElement.classList.add('wrong');
+
+                // Tampilkan jawaban yang benar
+                allButtons.forEach(btn => {
+                    if (btn.textContent === correctAnswerText) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+            
+            answeredQuestions++;
+            
+            // Cek jika semua pertanyaan sudah dijawab
+            if (answeredQuestions === totalQuestions) {
+                showFinalScore();
+            }
+        }
+        
+        function showFinalScore() {
+            const scoreElement = document.getElementById('final-score');
+            scoreElement.textContent = `Skor Anda: ${score} dari ${totalQuestions}`;
+            scoreElement.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
