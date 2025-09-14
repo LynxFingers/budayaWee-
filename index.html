@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Budaya Wee!!</title>
 <link rel="icon" type="image/png" href="Favicon.ico">
-<link rel="manifest" href="manifest.json">
  <style>
         * {
             margin: 0;
@@ -600,17 +599,8 @@ body {
             initCharacterCards();
         });
 
-        if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log('Service Worker terdaftar:', registration);
-      })
-      .catch(error => {
-        console.log('Pendaftaran Service Worker gagal:', error);
-      });
-  });
-};
+    
+
     </script>
 </body>
 </html>
