@@ -1,0 +1,20 @@
+{
+  "name": "Budaya Wee!",
+  "short_name": "Budaya Wee",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#4fc3f7",
+  "icons": [
+    {
+      "src": "Favicon.ico",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "Favicon.ico",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
